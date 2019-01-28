@@ -6,15 +6,15 @@ import {
 } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
+import OrderPage from '../screens/OrderPage';
+import NotbeingUsed from '../screens/NotbeingUsed';
 import SettingsScreen from '../screens/SettingsScreen';
 
-const HomeStack = createStackNavigator({
-  Home: HomeScreen,
+const OrderStack = createStackNavigator({
+  Home: OrderPage,
 });
 
-HomeStack.navigationOptions = {
+OrderStack.navigationOptions = {
   tabBarLabel: 'Main',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
@@ -29,7 +29,7 @@ HomeStack.navigationOptions = {
 };
 
 const LinksStack = createStackNavigator({
-  Links: LinksScreen,
+  Links: NotbeingUsed,
 });
 
 LinksStack.navigationOptions = {
@@ -57,7 +57,7 @@ SettingsStack.navigationOptions = {
 };
 
 export default createBottomTabNavigator({
-  HomeStack,
-  LinksStack,
+  OrderStack,
+  //LinksStack,
   SettingsStack,
 });

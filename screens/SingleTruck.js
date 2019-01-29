@@ -11,14 +11,13 @@ export default class SingleTruck extends React.Component {
       menu: []
     };
   }
-
+  
   static navigationOptions = {
-    title: "Truck Name",
+    title: 'Truck',
     style: {
       backgroundColor: "blue"
     }
   };
-
   componentDidMount() {
     const truckKey = this.props.navigation.getParam(
       "truckKey",
@@ -40,14 +39,19 @@ export default class SingleTruck extends React.Component {
             arr.push({ [key]: data[key] });
           }
         }
-        this.setState({ menu: [...arr] });
+        this.setState({menu: [...arr] });
       });
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>Menu</Text>
+      <Text>{this.props.navigation.getParam(
+        "truckKey",
+        "Not Available"
+      )}
+      </Text>
+      <Text>Menu</Text>
         {this.state.menu &&
           this.state.menu.map(item => {
             const [productName] = Object.keys(item);
@@ -71,7 +75,7 @@ export default class SingleTruck extends React.Component {
           })}
         <Button
           color="red"
-          title="Check Out"
+          title="Proceed To Checkout"
           onPress={() => {
             this.props.navigation.navigate("Cart", {
               cart: this.state.cart

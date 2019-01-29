@@ -11,8 +11,7 @@ import {
 import { Constants } from "expo";
 import * as firebase from "firebase";
 
-var config = {
-};
+var config = {};
 
 firebase.initializeApp(config);
 
@@ -73,7 +72,7 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <ScrollView style={styles.container}>
-        <Text style={styles.theHeader}>Available Cart</Text>
+        <Text style={styles.theHeader}>All Trucks</Text>
         <View>
           {this.state.orders.map(order => {
             //console.log(Object.keys(order));

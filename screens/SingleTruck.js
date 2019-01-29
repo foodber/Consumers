@@ -36,21 +36,28 @@ export default class SingleTruck extends React.Component {
         const data = snapShot.val();
         const arr = [];
         if (data) {
-          for (let key in data) {
-            arr.push({ [key]: data[key] });
+          for(let key in data) {
+            arr.push({[key]: data[key]})
           }
-
-          this.setState({ menu: [...arr] });
         }
+        this.setState({menu: [...arr]})
       });
-    console.log(this.state.menu);
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <Text>Hello World</Text>
-        {/* <View>{this.state.menu.map(truckMenu => console.log(truckMenu))}</View> */}
+        <Text>Menu</Text>
+        {this.state.menu && this.state.menu.map(item => {
+          for(let key in item) {
+            return (
+              <View key={item[key]}>
+              <Text>Item : {[key]}</Text>
+              <Text>Price : {item[key]}</Text>
+              </View>
+            )
+          }
+        })}
       </View>
     );
   }

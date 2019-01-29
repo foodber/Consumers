@@ -11,7 +11,8 @@ import {
 import { Constants } from "expo";
 import * as firebase from "firebase";
 
-var config = {};
+var config = {
+};
 
 firebase.initializeApp(config);
 

@@ -8,7 +8,7 @@ import {
 import TabBarIcon from "../components/TabBarIcon";
 import Homepage from "../screens/Homepage";
 import SingleTruck from "../screens/SingleTruck";
-import SettingsScreen from "../screens/SettingsScreen";
+import Cart from "../screens/Cart";
 
 const HomeStack = createStackNavigator({
   Home: Homepage,
@@ -43,22 +43,22 @@ HomeStack.navigationOptions = {
 //   ),
 // };
 
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen
-});
+// const SettingsStack = createStackNavigator({
+//   Settings: SettingsScreen
+// });
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: "Test",
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === "ios" ? "ios-options" : "md-options"}
-    />
-  )
-};
+// SettingsStack.navigationOptions = {
+//   tabBarLabel: "Test",
+//   tabBarIcon: ({ focused }) => (
+//     <TabBarIcon
+//       focused={focused}
+//       name={Platform.OS === "ios" ? "ios-options" : "md-options"}
+//     />
+//   )
+// };
 
 export default createBottomTabNavigator({
   HomeStack,
   //LinksStack,
-  SettingsStack
+  // SettingsStack
 });

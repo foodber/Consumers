@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Button } from 'react-native';
 
 export default class Cart extends React.Component {
   static navigationOptions = {
@@ -7,13 +7,15 @@ export default class Cart extends React.Component {
   };
   constructor() {
     super();
-    // this.state = {
-    //   test: this.props.truckKey,
-    // };
+    this.state = {
+      cart: [],
+    };
   }
   componentDidMount() {
-    let test = this.props.navigation.getParam('truckKey', 'default');
-    console.log(test);
+    let test = this.props.navigation.getParam('cart', 'default');
+    this.setState({
+      cart: [...test]
+    })
   }
 
   render() {
@@ -21,8 +23,16 @@ export default class Cart extends React.Component {
      * content, we just wanted to give you a quick view of your config */
     return (
       <View>
-        <Text>Hello World</Text>
-        <Text />
+        {this.state.cart && this.state.cart[0] && this.state.cart.map(item => {
+          const [itemName] = Object.keys(item)
+          return (
+            <View key={itemName}>
+              <Text>Item : {itemName}</Text>
+              <Text>Price : {item[itemName]}</Text>
+            </View>
+          )
+        })}
+        <Button title='CHECKOUT' />
       </View>
     );
   }

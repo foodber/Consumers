@@ -1,10 +1,9 @@
 import React from 'react';
-import { ExpoConfigView } from '@expo/samples';
 import { ScrollView, StyleSheet, View, Text } from 'react-native';
 
-export default class SettingsScreen extends React.Component {
+export default class Cart extends React.Component {
   static navigationOptions = {
-    title: 'World',
+    title: 'Cart',
   };
 
   render() {

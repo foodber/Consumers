@@ -8,7 +8,7 @@ import {
 import TabBarIcon from '../components/TabBarIcon';
 import OrderPage from '../screens/OrderPage';
 import NotbeingUsed from '../screens/NotbeingUsed';
-import SettingsScreen from '../screens/SettingsScreen';
+import Cart from '../screens/Cart';
 
 const OrderStack = createStackNavigator({
   Home: OrderPage,
@@ -42,11 +42,11 @@ LinksStack.navigationOptions = {
   ),
 };
 
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
+const Cart = createStackNavigator({
+  CurrnetCart: Cart,
 });
 
-SettingsStack.navigationOptions = {
+Cart.navigationOptions = {
   tabBarLabel: 'Test',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
@@ -59,5 +59,5 @@ SettingsStack.navigationOptions = {
 export default createBottomTabNavigator({
   OrderStack,
   //LinksStack,
-  SettingsStack,
+  // SettingsStack,
 });

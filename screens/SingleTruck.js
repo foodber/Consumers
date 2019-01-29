@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, StyleSheet, View, Text } from "react-native";
+import { ScrollView, StyleSheet, View, Text, Button } from "react-native";
 import * as firebase from "firebase";
 import { Constants } from "expo";
 
@@ -36,11 +36,11 @@ export default class SingleTruck extends React.Component {
         const data = snapShot.val();
         const arr = [];
         if (data) {
-          for(let key in data) {
-            arr.push({[key]: data[key]})
+          for (let key in data) {
+            arr.push({ [key]: data[key] });
           }
         }
-        this.setState({menu: [...arr]})
+        this.setState({ menu: [...arr] });
       });
   }
 
@@ -48,16 +48,47 @@ export default class SingleTruck extends React.Component {
     return (
       <View style={styles.container}>
         <Text>Menu</Text>
-        {this.state.menu && this.state.menu.map(item => {
-          for(let key in item) {
+        {this.state.menu &&
+          this.state.menu.map(item => {
+            const [productName] = Object.keys(item);
             return (
-              <View key={item[key]}>
-              <Text>Item : {[key]}</Text>
-              <Text>Price : {item[key]}</Text>
+              <View key={item[productName]}>
+                <Text>Item : {productName}</Text>
+                <Text>Price : {item[productName]}</Text>
+                <Button
+                  title="Add To Cart"
+                  onPress={() => {
+                    this.setState({
+                      cart: [
+                        ...this.state.cart,
+                        { [productName]: item[productName] }
+                      ]
+                    });
+                  }}
+                />
               </View>
-            )
-          }
-        })}
+            );
+          })}
+        <Button
+          color="red"
+          title="Check Out"
+          onPress={() => {
+            this.props.navigation.navigate("Cart", {
+              cart: this.state.cart
+            });
+          }}
+        />
+        {/* {this.state.cart &&
+          this.state.cart[0] &&
+          this.state.cart.map(item => {
+            const [itemName] = Object.keys(item);
+            return (
+              <View key={itemName}>
+                <Text>Item : {itemName}</Text>
+                <Text>Price : {item[itemName]}</Text>
+              </View>
+            );
+          })} */}
       </View>
     );
   }

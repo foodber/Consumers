@@ -12,7 +12,8 @@ import Cart from "../screens/Cart";
 
 const HomeStack = createStackNavigator({
   Home: Homepage,
-  singleTruck: SingleTruck
+  singleTruck: SingleTruck,
+  Cart: Cart
 });
 
 HomeStack.navigationOptions = {
@@ -58,7 +59,7 @@ HomeStack.navigationOptions = {
 // };
 
 export default createBottomTabNavigator({
-  HomeStack,
+  HomeStack
   //LinksStack,
   // SettingsStack
 });

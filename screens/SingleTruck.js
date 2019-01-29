@@ -24,24 +24,33 @@ export default class SingleTruck extends React.Component {
       "truckKey",
       "Not Available"
     );
+
+    const key = truckKey[0];
+
     const truckMenu = firebase
       .database()
       .ref()
       .child("truckmenus")
-      .orderByChild("truckKey")
+      .child(key)
       .on("value", snapShot => {
         const data = snapShot.val();
+        const arr = [];
         if (data) {
-          console.log(data);
+          for (let key in data) {
+            arr.push({ [key]: data[key] });
+          }
+
+          this.setState({ menu: [...arr] });
         }
       });
+    console.log(this.state.menu);
   }
 
   render() {
     return (
       <View style={styles.container}>
         <Text>Hello World</Text>
-        <View>{this.state.menu.map(truckMenu => console.log(truckMenu))}</View>
+        {/* <View>{this.state.menu.map(truckMenu => console.log(truckMenu))}</View> */}
       </View>
     );
   }

@@ -7,12 +7,12 @@ import {
 
 import TabBarIcon from "../components/TabBarIcon";
 import Homepage from "../screens/Homepage";
-import NotbeingUsed from "../screens/NotbeingUsed";
+import SingleTruck from "../screens/SingleTruck";
 import SettingsScreen from "../screens/SettingsScreen";
 
 const HomeStack = createStackNavigator({
   Home: Homepage,
-  Settings: SettingsScreen
+  singleTruck: SingleTruck
 });
 
 HomeStack.navigationOptions = {

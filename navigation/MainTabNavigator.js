@@ -5,17 +5,10 @@ import {
   createBottomTabNavigator
 } from "react-navigation";
 
-<<<<<<< HEAD
-import TabBarIcon from '../components/TabBarIcon';
-import OrderPage from '../screens/OrderPage';
-import NotbeingUsed from '../screens/NotbeingUsed';
-import Cart from '../screens/Cart';
-=======
 import TabBarIcon from "../components/TabBarIcon";
 import Homepage from "../screens/Homepage";
 import SingleTruck from "../screens/SingleTruck";
-import SettingsScreen from "../screens/SettingsScreen";
->>>>>>> 22660afe56683911f94dbf31aa386fabcf65a7bf
+import Cart from "../screens/Cart";
 
 const HomeStack = createStackNavigator({
   Home: Homepage,
@@ -50,35 +43,22 @@ HomeStack.navigationOptions = {
 //   ),
 // };
 
-<<<<<<< HEAD
-const Cart = createStackNavigator({
-  CurrnetCart: Cart,
-});
+// const SettingsStack = createStackNavigator({
+//   Settings: SettingsScreen
+// });
 
-Cart.navigationOptions = {
-  tabBarLabel: 'Test',
-=======
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen
-});
-
-SettingsStack.navigationOptions = {
-  tabBarLabel: "Test",
->>>>>>> 22660afe56683911f94dbf31aa386fabcf65a7bf
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === "ios" ? "ios-options" : "md-options"}
-    />
-  )
-};
+// SettingsStack.navigationOptions = {
+//   tabBarLabel: "Test",
+//   tabBarIcon: ({ focused }) => (
+//     <TabBarIcon
+//       focused={focused}
+//       name={Platform.OS === "ios" ? "ios-options" : "md-options"}
+//     />
+//   )
+// };
 
 export default createBottomTabNavigator({
   HomeStack,
   //LinksStack,
-<<<<<<< HEAD
-  // SettingsStack,
-=======
-  SettingsStack
->>>>>>> 22660afe56683911f94dbf31aa386fabcf65a7bf
+  // SettingsStack
 });

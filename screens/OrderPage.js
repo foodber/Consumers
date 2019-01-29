@@ -1,17 +1,22 @@
-import React from 'react';
+import React from "react";
 import {
   Platform,
   StyleSheet,
   Text,
   View,
   Button,
-  TextInput,
-} from 'react-native';
-import { Constants } from 'expo';
-import * as firebase from 'firebase';
+  TextInput
+} from "react-native";
+import { Constants } from "expo";
+import * as firebase from "firebase";
 
 var config = {
-
+  apiKey: "AIzaSyDluonuaPcLFWSjnA7h8EaRCKxZnUHJ19g",
+  authDomain: "foodber-65c10.firebaseapp.com",
+  databaseURL: "https://foodber-65c10.firebaseio.com",
+  projectId: "foodber-65c10",
+  storageBucket: "foodber-65c10.appspot.com",
+  messagingSenderId: "669394895252"
 };
 
 firebase.initializeApp(config);
@@ -20,17 +25,17 @@ export default class HomeScreen extends React.Component {
   constructor() {
     super();
     this.state = {
-      name: 'Place Order: ',
-      cart: '',
-      orders: [],
+      name: "Place Order: ",
+      cart: "",
+      orders: []
     };
     this.addItem = this.addItem.bind(this);
   }
   static navigationOptions = {
-    title: 'Order Page',
+    title: "Order Page",
     style: {
-      backgroundColor: 'blue',
-    },
+      backgroundColor: "blue"
+    }
   };
 
   addItem() {
@@ -43,10 +48,10 @@ export default class HomeScreen extends React.Component {
     const newOrderKey = firebase
       .database()
       .ref()
-      .child('orders')
+      .child("orders")
       .push();
     newOrderKey.set(this.state.cart, () => {
-      this.setState({ cart: '' });
+      this.setState({ cart: "" });
     });
   }
 
@@ -71,53 +76,53 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    marginTop: Constants.statusBarHeight,
+    backgroundColor: "#fff",
+    marginTop: Constants.statusBarHeight
   },
   foodInput: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.05)',
+    backgroundColor: "rgba(0,0,0,0.05)"
   },
   contentContainer: {
-    paddingTop: 30,
+    paddingTop: 30
   },
   getStartedContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff"
   },
   getStartedText: {
     fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
+    color: "rgba(96,100,109, 1)",
     lineHeight: 24,
-    textAlign: 'center',
+    textAlign: "center"
   },
   tabBarInfoContainer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
     ...Platform.select({
       ios: {
-        shadowColor: 'black',
+        shadowColor: "black",
         shadowOffset: { height: -3 },
         shadowOpacity: 0.1,
-        shadowRadius: 3,
+        shadowRadius: 3
       },
       android: {
-        elevation: 20,
-      },
+        elevation: 20
+      }
     }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
+    alignItems: "center",
+    backgroundColor: "#fbfbfb",
+    paddingVertical: 20
   },
   tabBarInfoText: {
     fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
+    color: "rgba(96,100,109, 1)",
+    textAlign: "center"
   },
   navigationFilename: {
-    marginTop: 5,
-  },
+    marginTop: 5
+  }
 });

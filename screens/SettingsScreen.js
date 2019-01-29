@@ -6,6 +6,16 @@ export default class SettingsScreen extends React.Component {
   static navigationOptions = {
     title: 'World',
   };
+  constructor() {
+    super();
+    // this.state = {
+    //   test: this.props.truckKey,
+    // };
+  }
+  componentDidMount() {
+    let test = this.props.navigation.getParam('truckKey', 'default');
+    console.log(test);
+  }
 
   render() {
     /* Go ahead and delete ExpoConfigView and replace it with your
@@ -13,6 +23,7 @@ export default class SettingsScreen extends React.Component {
     return (
       <View>
         <Text>Hello World</Text>
+        <Text />
       </View>
     );
   }

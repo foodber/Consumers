@@ -12,9 +12,9 @@ export default class Cart extends React.Component {
     };
   }
   componentDidMount() {
-    let test = this.props.navigation.getParam('cart', 'default');
+    let cart = this.props.navigation.getParam('cart', 'default');
     this.setState({
-      cart: [...test]
+      cart: [...cart]
     })
   }
 
@@ -32,7 +32,7 @@ export default class Cart extends React.Component {
             </View>
           )
         })}
-        <Button title='CHECKOUT' />
+        {/* <Button title='CHECKOUT' /> */}
       </View>
     );
   }

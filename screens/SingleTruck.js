@@ -2,13 +2,14 @@ import React from "react";
 import { ScrollView, StyleSheet, View, Text, Button } from "react-native";
 import * as firebase from "firebase";
 import { Constants } from "expo";
+import {fetchTruckMenu} from '../store/trucksReducer'
+import {connect} from 'react-redux'
 
-export default class SingleTruck extends React.Component {
+class SingleTruck extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       cart: [],
-      menu: []
     };
   }
   
@@ -18,32 +19,33 @@ export default class SingleTruck extends React.Component {
       backgroundColor: "blue"
     }
   };
-  componentDidMount() {
+  async componentDidMount() {
     const truckKey = this.props.navigation.getParam(
       "truckKey",
       "Not Available"
     );
-
-    const key = truckKey[0];
-
-    const truckMenu = firebase
-      .database()
-      .ref()
-      .child("truckmenus")
-      .child(key)
-      .on("value", snapShot => {
-        const data = snapShot.val();
-        const arr = [];
-        if (data) {
-          for (let key in data) {
-            arr.push({ [key]: data[key] });
-          }
-        }
-        this.setState({menu: [...arr] });
-      });
+      await this.props.fetchTruckMenu(truckKey)
+    
+    // const truckMenu = firebase
+    //   .database()
+    //   .ref()
+    //   .child("truckMenus")
+    //   .child(truckKey)
+    //   .on("value", snapShot => {
+    //     const data = snapShot.val();
+    //     const arr = [];
+    //     if (data) {
+    //       for (let key in data) {
+    //         arr.push({ [key]: data[key] });
+    //       }
+    //     }
+    //     this.setState({menu: [...arr] });
+    //   });
   }
 
   render() {
+    const menu = this.props.menu || []
+    const value = Object.keys(menu)
     return (
       <View style={styles.container}>
       <Text>{this.props.navigation.getParam(
@@ -52,20 +54,18 @@ export default class SingleTruck extends React.Component {
       )}
       </Text>
       <Text>Menu</Text>
-        {this.state.menu &&
-          this.state.menu.map(item => {
-            const [productName] = Object.keys(item);
+        {value.map(item => {
             return (
-              <View key={item[productName]}>
-                <Text>Item : {productName}</Text>
-                <Text>Price : {item[productName]}</Text>
+              <View key={item}>
+                <Text>Item : {item}</Text>
+                <Text>Price : {menu[item]}</Text>
                 <Button
                   title="Add To Cart"
                   onPress={() => {
                     this.setState({
                       cart: [
                         ...this.state.cart,
-                        { [productName]: item[productName] }
+                        { [item]: menu[item] }
                       ]
                     });
                   }}
@@ -115,3 +115,15 @@ const styles = StyleSheet.create({
     textAlign: "left"
   }
 });
+
+const mapStateToprops = state => ({
+  menu: state.menu.menu
+})
+
+const mapDispatchToProps = dispatch => ({
+  fetchTruckMenu: (key) => {
+    dispatch(fetchTruckMenu(key))
+  }
+})
+
+export default connect(mapStateToprops, mapDispatchToProps)(SingleTruck)

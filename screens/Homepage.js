@@ -9,11 +9,7 @@ import {
   ScrollView
 } from "react-native";
 import { Constants } from "expo";
-import * as firebase from "firebase";
-
-var config = {};
-
-firebase.initializeApp(config);
+import db from '../db/fire'
 
 export default class HomeScreen extends React.Component {
   constructor() {
@@ -29,71 +25,44 @@ export default class HomeScreen extends React.Component {
   };
 
   componentDidMount() {
-    //this is going to ref our firebase JUST ONCE when component mounts
-    //it is going to look under orders for all the children and we can access it through snapshot
-    //snapshot.val() will return a object with the key as a random string and value as the orders
-    //we set our orders state with the new array for values in foodTrucks
-    firebase
-      .database()
-      .ref()
-      .child("trucks")
-      .once("value", snapshot => {
-        const data = snapshot.val();
-        if (data) {
-          const foodTrucks = [];
-          //Object.keys(data).forEach(order => foodTrucks.push(data[order]));
-          for (let key in data) {
-            foodTrucks.push({ [key]: data[key].name });
-          }
-          this.setState({
-            orders: [...foodTrucks]
-          });
-        }
-      });
-    //this is going to ref our firebase at orders and put a event listener on there
-    //this will trigger everytime a child is added to our orders
-    //if the value in the child being added is valid it will add it to our orders state
-    //which will make our page re-render since state was updated
-    // firebase
-    //   .database()
-    //   .ref()
-    //   .child('orders')
-    //   .on('child_added', snapshot => {
-    //     const data = snapshot.val();
-    //     console.log('on', data);
-    //     if (data) {
-    //       this.setState(prevState => ({
-    //         orders: [...prevState.orders, data],
-    //       }));
-    //     }
-    //   });
+	db.collection('trucks')
+		.get()
+		.then((querySnapshot) => {
+			const trucks = [];
+			querySnapshot.forEach(function(doc) {
+				// doc.data() is never undefined for query doc snapshots
+				trucks.push(doc.data())
+			});
+			console.log('hey')
+			this.setState({orders: trucks})
+		});
+	
+	db.collection('trucks')
+		.add({
+			email: 'truck' * Math.floor(Math.random() * 99) + '@truckytruck.com',
+			pass: ';lasdkfjn;lksadfn',
+			name: 'truck' * Math.floor(Math.random() * 99),
+			menu: [
+				{
+					name: 'Potato',
+					price: 12.10
+				}
+			]
+		})
   }
 
   render() {
+	const trucks = this.state.orders || []
     return (
       <ScrollView style={styles.container}>
         <Text style={styles.theHeader}>All Trucks</Text>
-        <View>
-          {this.state.orders.map(order => {
-            //console.log(Object.keys(order));
-            return (
-              <View key={Object.keys(order)} style={styles.padding}>
-                <View style={styles.ViewBox}>
-                  <Text
-                    style={styles.FoodBox}
-                    onPress={() =>
-                      this.props.navigation.navigate("singleTruck", {
-                        truckKey: Object.keys(order)
-                      })
-                    }
-                  >
-                    {Object.values(order)}
-                  </Text>
-                </View>
-              </View>
-            );
-          })}
-        </View>
+		<Text>Hey theHeader</Text>
+        {trucks.map(truck => (
+			<View>
+				<Text>{truck.name}</Text>
+				{truck.menu.map(item => <Text>Name: {item.name} at {item.price}</Text>)}
+			</View>
+		))}
       </ScrollView>
     );
   }

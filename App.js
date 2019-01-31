@@ -4,6 +4,10 @@ import { AppLoading, Asset, Font, Icon } from "expo";
 import AppNavigator from "./navigation/AppNavigator";
 import { Provider } from "react-redux";
 import store from "./store";
+import db from "./db/fireStore";
+import Login from "./screens/Login";
+import firebase from "firebase";
+require("firebase/auth");
 
 export default class App extends React.Component {
   constructor(props) {
@@ -19,7 +23,7 @@ export default class App extends React.Component {
   }
 
   authListener() {
-    fire.auth().onAuthStateChanged(user => {
+    firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.setState({ user });
       } else {

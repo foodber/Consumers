@@ -18,13 +18,22 @@ export default class LoginForm extends Component {
       password: ""
     };
     this.login = this.login.bind(this);
+    this.signup = this.signup.bind(this);
   }
 
   login(event) {
     fire
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then(u => {})
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  signup() {
+    fire
+      .auth()
+      .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .catch(error => {
         console.log(error);
       });
@@ -59,7 +68,7 @@ export default class LoginForm extends Component {
           <Text style={styles.buttonText}>LOGIN</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.buttonContainer}>
+        <TouchableOpacity onPress={this.signup} style={styles.buttonContainer}>
           <Text style={styles.buttonText}>SIGN UP</Text>
         </TouchableOpacity>
       </View>

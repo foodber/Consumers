@@ -11,11 +11,6 @@ import {
 import { Constants } from "expo";
 import {connect} from 'react-redux'
 import {fetchAllTrucks} from '../store/trucksReducer'
-// import * as firebase from "firebase";
-
-var config = {};
-
-// firebase.initializeApp(config);
 
 class HomeScreen extends React.Component {
   static navigationOptions = {

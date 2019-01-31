@@ -14,6 +14,7 @@ const db = firebase.database().ref()
 
 const GOT_ALL_TRUCKS = 'GOT_ALL_TRUCKS'
 const GOT_TRUCK_MENU = 'GOT_TRUCK_MENU'
+const ADD_ORDER = 'ADD_ORDER'
 
 const initialState = {
     allTrucks: [],
@@ -31,6 +32,33 @@ const gotMenuForTruck = menu => {
     return {
         type: GOT_TRUCK_MENU,
         menu
+    }
+}
+
+const addOrder = order => {
+    return {
+        type: ADD_ORDER,
+        order
+    }
+}
+
+export const postOrder = order => {
+    return async dispatch => {
+        try {
+            //in setValue is where we will pass in the current logged
+            //in user
+            let addedOrder = await db.child('truckOrder').child('user1')
+            let newObj = {}
+            order.map(eachItem => {
+                const [itemName, quantity] = Object.keys(eachItem)
+                newObj[itemName] = eachItem[quantity]
+            })
+            addedOrder.set(newObj)
+            const action = addOrder(addedOrder)
+            dispatch(action)
+        } catch (error) {
+            console.error(error)
+        }
     }
 }
 

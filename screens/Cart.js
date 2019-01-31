@@ -1,7 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, Text, Button } from 'react-native';
+import {connect} from 'react-redux'
+import { postOrder } from '../store/trucksReducer'
 
-export default class Cart extends React.Component {
+class Cart extends React.Component {
   static navigationOptions = {
     title: 'Cart',
   };
@@ -24,16 +26,25 @@ export default class Cart extends React.Component {
     return (
       <View>
         {this.state.cart && this.state.cart[0] && this.state.cart.map(item => {
-          const [itemName] = Object.keys(item)
+          const [itemName, quantity] = Object.keys(item)
           return (
             <View key={itemName}>
               <Text>Item : {itemName}</Text>
               <Text>Price : {item[itemName]}</Text>
+              <Text>Quantity : {item[quantity]}</Text>
             </View>
           )
         })}
-        {/* <Button title='CHECKOUT' /> */}
+        <Button title='CHECKOUT' onPress={() => this.props.postOrder(this.state.cart)} />
       </View>
     );
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+  postOrder: order => {
+    dispatch(postOrder(order))
+  }
+})
+
+export default connect(null, mapDispatchToProps)(Cart)

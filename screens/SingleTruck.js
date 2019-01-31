@@ -10,7 +10,10 @@ class SingleTruck extends React.Component {
     super(props);
     this.state = {
       cart: [],
+      quantity: 1
     };
+    this.increaseQuantity = this.increaseQuantity.bind(this)
+    this.decreaseQuantity = this.decreaseQuantity.bind(this)
   }
   
   static navigationOptions = {
@@ -25,24 +28,19 @@ class SingleTruck extends React.Component {
       "Not Available"
     );
       await this.props.fetchTruckMenu(truckKey)
-    
-    // const truckMenu = firebase
-    //   .database()
-    //   .ref()
-    //   .child("truckMenus")
-    //   .child(truckKey)
-    //   .on("value", snapShot => {
-    //     const data = snapShot.val();
-    //     const arr = [];
-    //     if (data) {
-    //       for (let key in data) {
-    //         arr.push({ [key]: data[key] });
-    //       }
-    //     }
-    //     this.setState({menu: [...arr] });
-    //   });
+  }
+  increaseQuantity() {
+    this.setState({quantity: this.state.quantity + 1})
   }
 
+  decreaseQuantity() {
+    if (this.state.quantity === 1) {
+      this.setState({quantity: 1})
+    } else {
+      this.setState({quantity: this.state.quantity - 1})
+    }
+  }
+ 
   render() {
     const menu = this.props.menu || []
     const value = Object.keys(menu)
@@ -59,14 +57,20 @@ class SingleTruck extends React.Component {
               <View key={item}>
                 <Text>Item : {item}</Text>
                 <Text>Price : {menu[item]}</Text>
+                <Text>Quantity : {this.state.quantity}</Text>
+                <Button title="+" onPress={this.increaseQuantity} />
+                <Button title="-" onPress={this.decreaseQuantity} />
                 <Button
                   title="Add To Cart"
                   onPress={() => {
                     this.setState({
                       cart: [
                         ...this.state.cart,
-                        { [item]: menu[item] }
-                      ]
+                        { [item]: menu[item],
+                          quantity: this.state.quantity
+                        }
+                      ],
+                      quantity: 1,
                     });
                   }}
                 />
@@ -82,17 +86,6 @@ class SingleTruck extends React.Component {
             });
           }}
         />
-        {/* {this.state.cart &&
-          this.state.cart[0] &&
-          this.state.cart.map(item => {
-            const [itemName] = Object.keys(item);
-            return (
-              <View key={itemName}>
-                <Text>Item : {itemName}</Text>
-                <Text>Price : {item[itemName]}</Text>
-              </View>
-            );
-          })} */}
       </View>
     );
   }

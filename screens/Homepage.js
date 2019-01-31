@@ -9,11 +9,10 @@ import {
   ScrollView
 } from "react-native";
 import { Constants } from "expo";
-import * as firebase from "firebase";
-
-var config = {};
-
-firebase.initializeApp(config);
+// import * as fire from "firebase";
+import fire from "../firebase";
+require("firebase/auth");
+import { logOutAsync } from "expo/build/Google/Google";
 
 export default class HomeScreen extends React.Component {
   constructor() {
@@ -23,33 +22,46 @@ export default class HomeScreen extends React.Component {
       cart: "",
       orders: []
     };
+    this.logout = this.logout.bind(this);
   }
   static navigationOptions = {
     title: "Homepage"
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     //this is going to ref our firebase JUST ONCE when component mounts
     //it is going to look under orders for all the children and we can access it through snapshot
     //snapshot.val() will return a object with the key as a random string and value as the orders
     //we set our orders state with the new array for values in foodTrucks
-    firebase
-      .database()
-      .ref()
-      .child("trucks")
-      .once("value", snapshot => {
-        const data = snapshot.val();
-        if (data) {
-          const foodTrucks = [];
-          //Object.keys(data).forEach(order => foodTrucks.push(data[order]));
-          for (let key in data) {
-            foodTrucks.push({ [key]: data[key].name });
-          }
-          this.setState({
-            orders: [...foodTrucks]
-          });
+    await fire.child("trucks").once("value", snapshot => {
+      const data = snapshot.val();
+      if (data) {
+        const foodTrucks = [];
+        //Object.keys(data).forEach(order => foodTrucks.push(data[order]));
+        for (let key in data) {
+          foodTrucks.push({ [key]: data[key].name });
         }
-      });
+        this.setState({
+          orders: [...foodTrucks]
+        });
+      }
+    });
+
+    // firebase
+    //   .database()
+    //   .ref()
+    //   .child("testTruck")
+    //   .push()
+    //   .set({ name: "another truck" });
+
+    // firebase
+    //   .database()
+    //   .ref()
+    //   .child("testTruck")
+    //   .once("value", snapshot => {
+    //     console.log(snapshot.val());
+    //   });
+
     //this is going to ref our firebase at orders and put a event listener on there
     //this will trigger everytime a child is added to our orders
     //if the value in the child being added is valid it will add it to our orders state
@@ -67,6 +79,10 @@ export default class HomeScreen extends React.Component {
     //       }));
     //     }
     //   });
+  }
+
+  logout() {
+    fire.auth().signOut();
   }
 
   render() {
@@ -94,6 +110,7 @@ export default class HomeScreen extends React.Component {
             );
           })}
         </View>
+        <Button color="#d63031" title="LOGOUT" onPress={this.logout} />
       </ScrollView>
     );
   }

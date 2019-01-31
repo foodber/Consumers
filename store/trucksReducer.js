@@ -1,32 +1,33 @@
-import db from "../db/fireStore";
+//import db from '../db/fireStore';
+import { allTrucks } from '../db/fire';
 
-const GOT_ALL_TRUCKS = "GOT_ALL_TRUCKS";
-const GOT_TRUCK_MENU = "GOT_TRUCK_MENU";
-const ADD_ORDER = "ADD_ORDER";
+const GOT_ALL_TRUCKS = 'GOT_ALL_TRUCKS';
+const GOT_TRUCK_MENU = 'GOT_TRUCK_MENU';
+const ADD_ORDER = 'ADD_ORDER';
 
 const initialState = {
   allTrucks: [],
-  menu: []
+  menu: [],
 };
 
 const gotAllTrucks = allTrucks => {
   return {
     type: GOT_ALL_TRUCKS,
-    allTrucks
+    allTrucks,
   };
 };
 
 const gotMenuForTruck = menu => {
   return {
     type: GOT_TRUCK_MENU,
-    menu
+    menu,
   };
 };
 
 const addOrder = order => {
   return {
     type: ADD_ORDER,
-    order
+    order,
   };
 };
 
@@ -37,9 +38,9 @@ export const postOrder = order => {
       //in setValue is where we will pass in the current logged
       //in user
       let addedOrder = await db
-        .child("truckOrder")
+        .child('truckOrder')
         .child(truckKey)
-        .child("user5");
+        .child('user5');
       let newObj = {};
       order.cart.map(eachItem => {
         const [itemName, quantity] = Object.keys(eachItem);
@@ -58,9 +59,9 @@ export const fetchTruckMenu = key => {
   return async dispatch => {
     try {
       const menu = await db
-        .child("truckMenus")
+        .child('truckMenus')
         .child(key)
-        .once("value");
+        .once('value');
       const data = menu.val();
       dispatch(gotMenuForTruck(data));
     } catch (error) {
@@ -72,9 +73,12 @@ export const fetchTruckMenu = key => {
 export const fetchAllTrucks = () => {
   return async dispatch => {
     try {
-      const trucks = await db.child("trucks").once("value");
-      const data = trucks.val();
-      dispatch(gotAllTrucks(Object.values(data)));
+      const truckList = [];
+      const trucks = await allTrucks.get();
+      trucks.forEach(oneTruck => {
+        truckList.push(oneTruck.data());
+      });
+      dispatch(gotAllTrucks(truckList));
     } catch (error) {
       console.error(error);
     }

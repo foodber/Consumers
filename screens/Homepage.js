@@ -9,8 +9,9 @@ import {
   ScrollView
 } from "react-native";
 import { Constants } from "expo";
-import {connect} from 'react-redux'
-import {fetchAllTrucks} from '../store/trucksReducer'
+import { connect } from "react-redux";
+import { fetchAllTrucks } from "../store/trucksReducer";
+import fire from "firebase";
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -18,49 +19,15 @@ class HomeScreen extends React.Component {
   };
 
   async componentDidMount() {
-    await this.props.fetchAllTrucks()
-    //this is going to ref our firebase JUST ONCE when component mounts
-    //it is going to look under orders for all the children and we can access it through snapshot
-    //snapshot.val() will return a object with the key as a random string and value as the orders
-    //we set our orders state with the new array for values in foodTrucks
-    // firebase
-    //   .database()
-    //   .ref()
-    //   .child("trucks")
-    //   .once("value", snapshot => {
-    //     const data = snapshot.val();
-    //     if (data) {
-    //       const foodTrucks = [];
-    //       //Object.keys(data).forEach(order => foodTrucks.push(data[order]));
-    //       for (let key in data) {
-    //         foodTrucks.push({ [key]: data[key].name });
-    //       }
-    //       this.setState({
-    //         orders: [...foodTrucks]
-    //       });
-    //     }
-    //   });
-    //this is going to ref our firebase at orders and put a event listener on there
-    //this will trigger everytime a child is added to our orders
-    //if the value in the child being added is valid it will add it to our orders state
-    //which will make our page re-render since state was updated
-    // firebase
-    //   .database()
-    //   .ref()
-    //   .child('orders')
-    //   .on('child_added', snapshot => {
-    //     const data = snapshot.val();
-    //     console.log('on', data);
-    //     if (data) {
-    //       this.setState(prevState => ({
-    //         orders: [...prevState.orders, data],
-    //       }));
-    //     }
-    //   });
+    await this.props.fetchAllTrucks();
+  }
+
+  logout() {
+    fire.auth().signOut();
   }
 
   render() {
-    const allTrucks = this.props.allTrucks || []
+    const allTrucks = this.props.allTrucks || [];
     return (
       <ScrollView style={styles.container}>
         <Text style={styles.theHeader}>All Trucks</Text>
@@ -84,6 +51,7 @@ class HomeScreen extends React.Component {
             );
           })}
         </View>
+        <Button color="#d63031" title="LOGOUT" onPress={this.logout} />
       </ScrollView>
     );
   }
@@ -127,12 +95,15 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({
   allTrucks: state.allTrucks.allTrucks
-})
+});
 
 const mapDispatchToProps = dispatch => ({
   fetchAllTrucks: () => {
-    dispatch(fetchAllTrucks())
+    dispatch(fetchAllTrucks());
   }
-})
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HomeScreen);

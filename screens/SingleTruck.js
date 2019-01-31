@@ -2,14 +2,19 @@ import React from "react";
 import { ScrollView, StyleSheet, View, Text, Button } from "react-native";
 import * as firebase from "firebase";
 import { Constants } from "expo";
+import {fetchTruckMenu} from '../store/trucksReducer'
+import {connect} from 'react-redux'
 
-export default class SingleTruck extends React.Component {
+class SingleTruck extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       cart: [],
-      menu: []
+      quantity: 1,
+      truckName: ''
     };
+    this.increaseQuantity = this.increaseQuantity.bind(this)
+    this.decreaseQuantity = this.decreaseQuantity.bind(this)
   }
   
   static navigationOptions = {
@@ -18,81 +23,76 @@ export default class SingleTruck extends React.Component {
       backgroundColor: "blue"
     }
   };
-  componentDidMount() {
+  async componentDidMount() {
     const truckKey = this.props.navigation.getParam(
       "truckKey",
       "Not Available"
     );
-
-    const key = truckKey[0];
-
-    const truckMenu = firebase
-      .database()
-      .ref()
-      .child("truckmenus")
-      .child(key)
-      .on("value", snapShot => {
-        const data = snapShot.val();
-        const arr = [];
-        if (data) {
-          for (let key in data) {
-            arr.push({ [key]: data[key] });
-          }
-        }
-        this.setState({menu: [...arr] });
-      });
+      await this.props.fetchTruckMenu(truckKey)
   }
 
+  //TRY THESE WITH RENDERING THE STATE SOMEWHERE ELSE
+  //ON THE PAGE
+  increaseQuantity() {
+    this.setState({quantity: this.state.quantity + 1})
+  }
+
+  decreaseQuantity() {
+    if (this.state.quantity === 1) {
+      this.setState({quantity: 1})
+    } else {
+      this.setState({quantity: this.state.quantity - 1})
+    }
+  }
+ 
   render() {
+    const menu = this.props.menu || []
+    const value = Object.keys(menu)
+    const truckKey = this.props.navigation.getParam(
+      "truckKey",
+      "Not Available"
+    )
     return (
       <View style={styles.container}>
-      <Text>{this.props.navigation.getParam(
-        "truckKey",
-        "Not Available"
-      )}
+      <Text>{truckKey}
       </Text>
       <Text>Menu</Text>
-        {this.state.menu &&
-          this.state.menu.map(item => {
-            const [productName] = Object.keys(item);
+        {value.map(item => {
             return (
-              <View key={item[productName]}>
-                <Text>Item : {productName}</Text>
-                <Text>Price : {item[productName]}</Text>
+              <View key={item}>
+                <Text>Item : {item}</Text>
+                <Text>Price : {menu[item]}</Text>
+                <Button title="+" onPress={this.increaseQuantity} />
+                <Button title="-" onPress={this.decreaseQuantity} />
                 <Button
                   title="Add To Cart"
                   onPress={() => {
                     this.setState({
                       cart: [
                         ...this.state.cart,
-                        { [productName]: item[productName] }
-                      ]
+                        { [item]: menu[item],
+                          quantity: this.state.quantity,
+                          truckName: truckKey
+                        }
+                      ],
+                      quantity: 1,
                     });
                   }}
                 />
               </View>
             );
           })}
+          <Text>Quantity : {this.state.quantity} </Text>
         <Button
           color="red"
           title="Proceed To Checkout"
           onPress={() => {
             this.props.navigation.navigate("Cart", {
-              cart: this.state.cart
+              cart: this.state.cart,
+              truckKey: this.state.truckName
             });
           }}
         />
-        {/* {this.state.cart &&
-          this.state.cart[0] &&
-          this.state.cart.map(item => {
-            const [itemName] = Object.keys(item);
-            return (
-              <View key={itemName}>
-                <Text>Item : {itemName}</Text>
-                <Text>Price : {item[itemName]}</Text>
-              </View>
-            );
-          })} */}
       </View>
     );
   }
@@ -115,3 +115,15 @@ const styles = StyleSheet.create({
     textAlign: "left"
   }
 });
+
+const mapStateToprops = state => ({
+  menu: state.menu.menu
+})
+
+const mapDispatchToProps = dispatch => ({
+  fetchTruckMenu: (key) => {
+    dispatch(fetchTruckMenu(key))
+  }
+})
+
+export default connect(mapStateToprops, mapDispatchToProps)(SingleTruck)

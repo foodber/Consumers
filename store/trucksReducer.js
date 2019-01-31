@@ -2,7 +2,7 @@
 import { allTrucks } from '../db/fire';
 
 const GOT_ALL_TRUCKS = 'GOT_ALL_TRUCKS';
-const GOT_TRUCK_MENU = 'GOT_TRUCK_MENU';
+const SET_TRUCK_MENU = 'SET_TRUCK_MENU';
 const ADD_ORDER = 'ADD_ORDER';
 
 const initialState = {
@@ -17,9 +17,9 @@ const gotAllTrucks = allTrucks => {
   };
 };
 
-const gotMenuForTruck = menu => {
+export const setMenuForTruck = menu => {
   return {
-    type: GOT_TRUCK_MENU,
+    type: SET_TRUCK_MENU,
     menu,
   };
 };
@@ -55,20 +55,20 @@ export const postOrder = order => {
   };
 };
 
-export const fetchTruckMenu = key => {
-  return async dispatch => {
-    try {
-      const menu = await db
-        .child('truckMenus')
-        .child(key)
-        .once('value');
-      const data = menu.val();
-      dispatch(gotMenuForTruck(data));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-};
+// export const fetchTruckMenu = key => {
+//   return async dispatch => {
+//     try {
+//       const menu = await db
+//         .child('truckMenus')
+//         .child(key)
+//         .once('value');
+//       const data = menu.val();
+//       dispatch(gotMenuForTruck(data));
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   };
+// };
 
 export const fetchAllTrucks = () => {
   return async dispatch => {
@@ -89,7 +89,7 @@ export default function(state = initialState, action) {
   switch (action.type) {
     case GOT_ALL_TRUCKS:
       return { ...state, allTrucks: [...action.allTrucks] };
-    case GOT_TRUCK_MENU:
+    case SET_TRUCK_MENU:
       return { ...state, menu: action.menu };
     default:
       return state;

@@ -20,11 +20,13 @@ class Cart extends React.Component {
     cart.cart.map(obj => {
       newObj.push(obj)
     })
-    this.setState({
-      cart: [...newObj],
-      truckKey: newObj[0].truckName
-    })
+    if (newObj && newObj[0]) {
+      this.setState({
+        cart: [...newObj],
+        truckKey: newObj[0].truckName
+      })
   }
+}
   
   render() {
     /* Go ahead and delete ExpoConfigView and replace it with your

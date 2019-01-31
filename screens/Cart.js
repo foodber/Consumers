@@ -11,18 +11,24 @@ class Cart extends React.Component {
     super();
     this.state = {
       cart: [],
+      truckKey: ''
     };
   }
   componentDidMount() {
-    let cart = this.props.navigation.getParam('cart', 'default');
+    let cart = this.props.navigation.state.params;
+    const newObj = []
+    cart.cart.map(obj => {
+      newObj.push(obj)
+    })
     this.setState({
-      cart: [...cart]
+      cart: [...newObj],
+      truckKey: newObj[0].truckName
     })
   }
-
+  
   render() {
     /* Go ahead and delete ExpoConfigView and replace it with your
-     * content, we just wanted to give you a quick view of your config */
+    * content, we just wanted to give you a quick view of your config */
     return (
       <View>
         {this.state.cart && this.state.cart[0] && this.state.cart.map(item => {
@@ -35,7 +41,7 @@ class Cart extends React.Component {
             </View>
           )
         })}
-        <Button title='CHECKOUT' onPress={() => this.props.postOrder(this.state.cart)} />
+        <Button title='CHECKOUT' onPress={() => this.props.postOrder(this.state)} />
       </View>
     );
   }

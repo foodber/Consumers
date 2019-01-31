@@ -10,7 +10,8 @@ class SingleTruck extends React.Component {
     super(props);
     this.state = {
       cart: [],
-      quantity: 1
+      quantity: 1,
+      truckName: ''
     };
     this.increaseQuantity = this.increaseQuantity.bind(this)
     this.decreaseQuantity = this.decreaseQuantity.bind(this)
@@ -29,6 +30,9 @@ class SingleTruck extends React.Component {
     );
       await this.props.fetchTruckMenu(truckKey)
   }
+
+  //TRY THESE WITH RENDERING THE STATE SOMEWHERE ELSE
+  //ON THE PAGE
   increaseQuantity() {
     this.setState({quantity: this.state.quantity + 1})
   }
@@ -44,12 +48,13 @@ class SingleTruck extends React.Component {
   render() {
     const menu = this.props.menu || []
     const value = Object.keys(menu)
+    const truckKey = this.props.navigation.getParam(
+      "truckKey",
+      "Not Available"
+    )
     return (
       <View style={styles.container}>
-      <Text>{this.props.navigation.getParam(
-        "truckKey",
-        "Not Available"
-      )}
+      <Text>{truckKey}
       </Text>
       <Text>Menu</Text>
         {value.map(item => {
@@ -57,7 +62,6 @@ class SingleTruck extends React.Component {
               <View key={item}>
                 <Text>Item : {item}</Text>
                 <Text>Price : {menu[item]}</Text>
-                <Text>Quantity : {this.state.quantity}</Text>
                 <Button title="+" onPress={this.increaseQuantity} />
                 <Button title="-" onPress={this.decreaseQuantity} />
                 <Button
@@ -67,7 +71,8 @@ class SingleTruck extends React.Component {
                       cart: [
                         ...this.state.cart,
                         { [item]: menu[item],
-                          quantity: this.state.quantity
+                          quantity: this.state.quantity,
+                          truckName: truckKey
                         }
                       ],
                       quantity: 1,
@@ -77,12 +82,14 @@ class SingleTruck extends React.Component {
               </View>
             );
           })}
+          <Text>Quantity : {this.state.quantity} </Text>
         <Button
           color="red"
           title="Proceed To Checkout"
           onPress={() => {
             this.props.navigation.navigate("Cart", {
-              cart: this.state.cart
+              cart: this.state.cart,
+              truckKey: this.state.truckName
             });
           }}
         />

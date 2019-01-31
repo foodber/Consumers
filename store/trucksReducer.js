@@ -45,11 +45,12 @@ const addOrder = order => {
 export const postOrder = order => {
     return async dispatch => {
         try {
+            const truckKey = order.cart[0].truckName
             //in setValue is where we will pass in the current logged
             //in user
-            let addedOrder = await db.child('truckOrder').child('user1')
+            let addedOrder = await db.child('truckOrder').child(truckKey).child('user5')
             let newObj = {}
-            order.map(eachItem => {
+            order.cart.map(eachItem => {
                 const [itemName, quantity] = Object.keys(eachItem)
                 newObj[itemName] = eachItem[quantity]
             })

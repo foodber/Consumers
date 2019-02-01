@@ -16,6 +16,7 @@ class Cart extends React.Component {
   }
   componentDidMount() {
     let cart = this.props.navigation.state.params;
+    const truckName = ''
     const newObj = []
     cart.cart.map(obj => {
       newObj.push(obj)
@@ -27,19 +28,16 @@ class Cart extends React.Component {
       })
   }
 }
-  
-  render() {
-    /* Go ahead and delete ExpoConfigView and replace it with your
-    * content, we just wanted to give you a quick view of your config */
+
+render() {
     return (
       <View>
+        <Text>Your Cart</Text>
         {this.state.cart && this.state.cart[0] && this.state.cart.map(item => {
-          const [itemName, quantity] = Object.keys(item)
           return (
-            <View key={itemName}>
-              <Text>Item : {itemName}</Text>
-              <Text>Price : {item[itemName]}</Text>
-              <Text>Quantity : {item[quantity]}</Text>
+            <View key={item.name}>
+              <Text>Item : {item.name}</Text>
+              <Text>Price : {item.price}</Text>
             </View>
           )
         })}

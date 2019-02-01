@@ -55,21 +55,6 @@ export const postOrder = order => {
   };
 };
 
-// export const fetchTruckMenu = key => {
-//   return async dispatch => {
-//     try {
-//       const menu = await db
-//         .child('truckMenus')
-//         .child(key)
-//         .once('value');
-//       const data = menu.val();
-//       dispatch(gotMenuForTruck(data));
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   };
-// };
-
 export const fetchAllTrucks = () => {
   return async dispatch => {
     try {

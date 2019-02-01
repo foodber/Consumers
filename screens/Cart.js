@@ -30,19 +30,36 @@ class Cart extends React.Component {
 }
 
 render() {
+    const cart = this.state.cart
     return (
       <View>
         <Text>Your Cart</Text>
-        {this.state.cart && this.state.cart[0] && this.state.cart.map(item => {
+        {cart && cart[0] && cart.map(item => {
           return (
             <View key={item.name}>
               <Text>Item : {item.name}</Text>
               <Text>Price : {item.price}</Text>
               <Text>Quantity : {item.quantity}</Text>
+              <Button title="REMOVE FROM CART" onPress={() => {
+                const filteredCart = []
+                cart.filter(cartItem => {
+                  if (cartItem.name !== item.name) {
+                    filteredCart.push(cartItem)
+                  }
+                })
+                this.setState({
+                  cart: filteredCart
+                })
+              }} />
             </View>
           )
         })}
-        <Button title='CHECKOUT' onPress={() => this.props.postOrder(this.state)} />
+        <Button title='CHECKOUT' onPress={() => {
+          this.props.postOrder(this.state)
+          this.setState({
+            cart: []
+          })
+          }} />
       </View>
     );
   }

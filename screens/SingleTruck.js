@@ -11,8 +11,10 @@ class SingleTruck extends React.Component {
     this.state = {
       cart: [],
       truckName: '',
+      quantity: 1
     };
-    // this.cartChecker = this.cartChecker.bind(this)
+    this.increaseQuantity = this.increaseQuantity.bind(this)
+    this.decreaseQuantity = this.decreaseQuantity.bind(this)
   }
 
   static navigationOptions = {
@@ -28,6 +30,17 @@ class SingleTruck extends React.Component {
       'Not Available'
     );
     await this.props.fetchTruckMenu(truckKey);
+  }
+
+  increaseQuantity() {
+    this.setState({quantity: this.state.quantity + 1})
+  }
+  decreaseQuantity() {
+    if (this.state.quantity === 1) {
+      this.setState({quantity: 1})
+    } else {
+      this.setState({quantity: this.state.quantity - 1})
+    }
   }
   
   render() {
@@ -45,11 +58,19 @@ class SingleTruck extends React.Component {
             <View key={index}>
               <Text>Item: {menuItem.name}</Text>
               <Text>Price: {menuItem.price}</Text>
+              <Button title="+" onPress={this.increaseQuantity} />
+              <Button title="-" onPress={this.decreaseQuantity} />
               <Button title="Add To Cart" onPress={() => {
                 const cart = this.state.cart
                 if (cart.length === 0) {
                   this.setState({
-                    cart: [menuItem]
+                    cart: [{
+                      name: menuItem.name,
+                      price: menuItem.price,
+                      quantity: this.state.quantity,
+                      truckName: truckKey
+                    }],
+                    quantity: 1
                   })
                 } else {
                   let checkerArr = []
@@ -58,7 +79,13 @@ class SingleTruck extends React.Component {
                   })
                   if (!checkerArr.includes(menuItem.name)) {
                     this.setState({
-                      cart: [...cart, menuItem]
+                      cart: [...cart, {
+                        name: menuItem.name,
+                        price: menuItem.price,
+                        quantity: this.state.quantity,
+                        truckName: truckKey
+                      }],
+                      quantity: 1
                     })
                   }
                 }
@@ -66,6 +93,7 @@ class SingleTruck extends React.Component {
             </View>
           );
         })}
+        <Text>Quantity Of Order: {this.state.quantity}</Text>
         <Button
           color="red"
           title="Proceed To Checkout"

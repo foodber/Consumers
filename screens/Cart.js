@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
+import { StyleSheet, View, Text, Button, TextInput } from 'react-native';
 import {connect} from 'react-redux'
 import { postOrder } from '../store/trucksReducer'
 
@@ -11,12 +11,12 @@ class Cart extends React.Component {
     super();
     this.state = {
       cart: [],
-      truckKey: ''
+      truckKey: '',
     };
   }
+
   componentDidMount() {
     let cart = this.props.navigation.state.params;
-    const truckName = ''
     const newObj = []
     cart.cart.map(obj => {
       newObj.push(obj)
@@ -38,6 +38,7 @@ render() {
             <View key={item.name}>
               <Text>Item : {item.name}</Text>
               <Text>Price : {item.price}</Text>
+              <Text>Quantity : {item.quantity}</Text>
             </View>
           )
         })}
@@ -46,6 +47,15 @@ render() {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  ViewBox: {
+    paddingLeft: 10,
+    // borderRadius: 5,
+    // borderWidth: 1,
+    backgroundColor: '#f5f5f5',
+  },
+})
 
 const mapDispatchToProps = dispatch => ({
   postOrder: order => {

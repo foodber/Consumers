@@ -30,7 +30,7 @@ export default class LoginForm extends Component {
       });
   }
 
-  signup() {
+  async signup() {
     fire
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)

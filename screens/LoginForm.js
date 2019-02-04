@@ -7,6 +7,7 @@ import {
   Text,
   StatusBar
 } from "react-native";
+import { Container, Header, Content, Item, Input, Icon } from "native-base";
 import fire from "firebase";
 require("firebase/auth");
 

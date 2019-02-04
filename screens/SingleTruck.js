@@ -11,10 +11,10 @@ class SingleTruck extends React.Component {
     this.state = {
       cart: [],
       truckName: '',
-      quantity: 1
+      quantity: 1,
     };
-    this.increaseQuantity = this.increaseQuantity.bind(this)
-    this.decreaseQuantity = this.decreaseQuantity.bind(this)
+    this.increaseQuantity = this.increaseQuantity.bind(this);
+    this.decreaseQuantity = this.decreaseQuantity.bind(this);
   }
 
   static navigationOptions = {
@@ -33,24 +33,24 @@ class SingleTruck extends React.Component {
   }
 
   increaseQuantity() {
-    this.setState({quantity: this.state.quantity + 1})
+    this.setState({ quantity: this.state.quantity + 1 });
   }
   decreaseQuantity() {
     if (this.state.quantity === 1) {
-      this.setState({quantity: 1})
+      this.setState({ quantity: 1 });
     } else {
-      this.setState({quantity: this.state.quantity - 1})
+      this.setState({ quantity: this.state.quantity - 1 });
     }
   }
-  
+
   render() {
     const menu = this.props.menu || [];
     const truckKey = this.props.navigation.getParam(
       'truckKey',
       'Not Available'
-      );
-      return (
-        <View style={styles.container}>
+    );
+    return (
+      <View style={styles.container}>
         <Text>{truckKey}</Text>
         <Text>Menu</Text>
         {menu.map((menuItem, index) => {
@@ -60,36 +60,44 @@ class SingleTruck extends React.Component {
               <Text>Price: {menuItem.price}</Text>
               <Button title="+" onPress={this.increaseQuantity} />
               <Button title="-" onPress={this.decreaseQuantity} />
-              <Button title="Add To Cart" onPress={() => {
-                const cart = this.state.cart
-                if (cart.length === 0) {
-                  this.setState({
-                    cart: [{
-                      name: menuItem.name,
-                      price: menuItem.price,
-                      quantity: this.state.quantity,
-                      truckName: truckKey
-                    }],
-                    quantity: 1
-                  })
-                } else {
-                  let checkerArr = []
-                  cart.map(cartObj => {
-                    checkerArr.push(cartObj.name)
-                  })
-                  if (!checkerArr.includes(menuItem.name)) {
+              <Button
+                title="Add To Cart"
+                onPress={() => {
+                  const cart = this.state.cart;
+                  if (cart.length === 0) {
                     this.setState({
-                      cart: [...cart, {
-                        name: menuItem.name,
-                        price: menuItem.price,
-                        quantity: this.state.quantity,
-                        truckName: truckKey
-                      }],
-                      quantity: 1
-                    })
+                      cart: [
+                        {
+                          name: menuItem.name,
+                          price: menuItem.price,
+                          quantity: this.state.quantity,
+                          truckName: truckKey,
+                        },
+                      ],
+                      quantity: 1,
+                    });
+                  } else {
+                    let checkerArr = [];
+                    cart.map(cartObj => {
+                      checkerArr.push(cartObj.name);
+                    });
+                    if (!checkerArr.includes(menuItem.name)) {
+                      this.setState({
+                        cart: [
+                          ...cart,
+                          {
+                            name: menuItem.name,
+                            price: menuItem.price,
+                            quantity: this.state.quantity,
+                            truckName: truckKey,
+                          },
+                        ],
+                        quantity: 1,
+                      });
+                    }
                   }
-                }
-              }} />
+                }}
+              />
             </View>
           );
         })}
@@ -103,8 +111,8 @@ class SingleTruck extends React.Component {
               truckKey: this.state.truckName,
             });
             this.setState({
-              cart: []
-            })
+              cart: [],
+            });
           }}
         />
       </View>
@@ -133,11 +141,5 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   menu: state.allTrucks.menu,
 });
-
-// const mapDispatchToProps = dispatch => ({
-//   setTruckMenu: (key) => {
-//     dispatch(setTruckMenu(key))
-//   }
-// })
 
 export default connect(mapStateToProps)(SingleTruck);

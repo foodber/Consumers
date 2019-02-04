@@ -1,33 +1,48 @@
-import React from "react";
-import { Platform } from "react-native";
+import React from 'react';
+import { Platform } from 'react-native';
 import {
   createStackNavigator,
-  createBottomTabNavigator
-} from "react-navigation";
+  createBottomTabNavigator,
+} from 'react-navigation';
 
-import TabBarIcon from "../components/TabBarIcon";
-import Homepage from "../screens/Homepage";
-import SingleTruck from "../screens/SingleTruck";
-import Cart from "../screens/Cart";
+import TabBarIcon from '../components/TabBarIcon';
+import Homepage from '../screens/Homepage';
+import SingleTruck from '../screens/SingleTruck';
+import Cart from '../screens/Cart';
+import Map from '../screens/map';
 
 const HomeStack = createStackNavigator({
   Home: Homepage,
   singleTruck: SingleTruck,
-  Cart: Cart
+  Cart: Cart,
 });
 
 HomeStack.navigationOptions = {
-  tabBarLabel: "Main",
+  tabBarLabel: 'Main',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
       name={
-        Platform.OS === "ios"
-          ? `ios-information-circle${focused ? "" : "-outline"}`
-          : "md-information-circle"
+        Platform.OS === 'ios'
+          ? `ios-information-circle${focused ? '' : '-outline'}`
+          : 'md-information-circle'
       }
     />
-  )
+  ),
+};
+
+const mapStack = createStackNavigator({
+  Map: Map,
+});
+
+mapStack.navigationOptions = {
+  tabBarLabel: 'Map',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+    />
+  ),
 };
 
 // const SingleTruck = createStackNavigator({
@@ -59,7 +74,8 @@ HomeStack.navigationOptions = {
 // };
 
 export default createBottomTabNavigator({
-  HomeStack
+  HomeStack,
+  mapStack,
   //LinksStack,
   // SettingsStack
 });

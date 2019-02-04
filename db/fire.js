@@ -14,5 +14,8 @@ firebase.initializeApp(config);
 const db = firebase.firestore();
 
 const allTrucks = db.collection('trucks');
+const addUser = db.collection('users');
+const truckOrders = db.collection('truckOrders');
+const truckLocation = db.collection('truckLocation');
 
-export { db, allTrucks };
+export { db, allTrucks, truckOrders, addUser, truckLocation };

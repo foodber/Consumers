@@ -1,5 +1,4 @@
-//import db from '../db/fireStore';
-import { allTrucks } from '../db/fire';
+import { allTrucks, truckOrders } from '../db/fire';
 
 const GOT_ALL_TRUCKS = 'GOT_ALL_TRUCKS';
 const SET_TRUCK_MENU = 'SET_TRUCK_MENU';
@@ -32,43 +31,27 @@ const addOrder = order => {
 };
 
 export const postOrder = order => {
-  return async dispatch => {
+  return async () => {
     try {
       const truckKey = await order.cart[0].truckName;
-      //in setValue is where we will pass in the current logged
-      //in user
-      let addedOrder = await db
-        .child('truckOrder')
-        .child(truckKey)
-        .child('user5');
-      let newObj = {};
-      order.cart.map(eachItem => {
-        const [itemName, quantity] = Object.keys(eachItem);
-        newObj[itemName] = eachItem[quantity];
-      });
-      addedOrder.set(newObj);
-      const action = addOrder(addedOrder);
-      dispatch(action);
+      if (order.cart.length !== 0) {
+        let dataObj = {};
+        order.cart.map(singleOrder => {
+          dataObj[singleOrder.name] = singleOrder.quantity;
+        });
+        await truckOrders.doc(truckKey).set(
+          {
+            //this will be logged in user
+            user6: dataObj,
+          },
+          { merge: true }
+        );
+      }
     } catch (error) {
       console.error(error);
     }
   };
 };
-
-// export const fetchTruckMenu = key => {
-//   return async dispatch => {
-//     try {
-//       const menu = await db
-//         .child('truckMenus')
-//         .child(key)
-//         .once('value');
-//       const data = menu.val();
-//       dispatch(gotMenuForTruck(data));
-//     } catch (error) {
-//       console.error(error);
-//     }
-//   };
-// };
 
 export const fetchAllTrucks = () => {
   return async dispatch => {

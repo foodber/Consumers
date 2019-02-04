@@ -34,7 +34,7 @@ class HomeScreen extends React.Component {
         <View>
           {allTrucks.map(truck => {
             return (
-              <View key={truck.name} style={styles.padding}>
+              <View key={truck.email} style={styles.padding}>
                 <View style={styles.ViewBox}>
                   <Text
                     style={styles.FoodBox}

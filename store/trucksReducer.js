@@ -35,14 +35,16 @@ export const postOrder = order => {
   return async () => {
     try {
       const truckKey = await order.cart[0].truckName;
-      let dataObj = {}
-      order.cart.map(singleOrder => {
-          dataObj[singleOrder.name] = singleOrder.quantity
-      })
-      await truckOrders.doc(truckKey).set({
-          //this will be logged in user
-          user5: [dataObj]
-      })
+      if (order.cart.length !== 0) {
+        let dataObj = {}
+        order.cart.map(singleOrder => {
+            dataObj[singleOrder.name] = singleOrder.quantity
+        })
+        await truckOrders.doc(truckKey).set({
+            //this will be logged in user
+            user8: dataObj
+        }, {merge: true})
+      }
     } catch (error) {
       console.error(error);
     }

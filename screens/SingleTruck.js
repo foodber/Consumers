@@ -102,6 +102,9 @@ class SingleTruck extends React.Component {
               cart: this.state.cart,
               truckKey: this.state.truckName,
             });
+            this.setState({
+              cart: []
+            })
           }}
         />
       </View>

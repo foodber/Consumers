@@ -41,24 +41,24 @@ render() {
               <Text>Price : {item.price}</Text>
               <Text>Quantity : {item.quantity}</Text>
               <Button title="REMOVE FROM CART" onPress={() => {
-                const filteredCart = []
-                cart.filter(cartItem => {
-                  if (cartItem.name !== item.name) {
-                    filteredCart.push(cartItem)
-                  }
-                })
                 this.setState({
-                  cart: filteredCart
+                  cart: cart.filter(cartItem => {
+                   return cartItem.name !== item.name
+                  })
                 })
               }} />
             </View>
           )
         })}
         <Button title='CHECKOUT' onPress={() => {
-          this.props.postOrder(this.state)
-          this.setState({
-            cart: []
-          })
+          if (cart.length !== 0) {
+            this.props.postOrder(this.state)
+            this.setState({
+              cart: []
+            })
+          } else {
+            alert("YOUR CART IS EMPTY")
+          }
           }} />
       </View>
     );

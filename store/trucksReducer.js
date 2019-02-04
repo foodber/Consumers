@@ -1,33 +1,33 @@
 //import db from '../db/fireStore';
-import { allTrucks, truckOrders } from '../db/fire';
+import { allTrucks, truckOrders } from "../db/fire";
 
-const GOT_ALL_TRUCKS = 'GOT_ALL_TRUCKS';
-const SET_TRUCK_MENU = 'SET_TRUCK_MENU';
-const ADD_ORDER = 'ADD_ORDER';
+const GOT_ALL_TRUCKS = "GOT_ALL_TRUCKS";
+const SET_TRUCK_MENU = "SET_TRUCK_MENU";
+const ADD_ORDER = "ADD_ORDER";
 
 const initialState = {
   allTrucks: [],
-  menu: [],
+  menu: []
 };
 
 const gotAllTrucks = allTrucks => {
   return {
     type: GOT_ALL_TRUCKS,
-    allTrucks,
+    allTrucks
   };
 };
 
 export const setMenuForTruck = menu => {
   return {
     type: SET_TRUCK_MENU,
-    menu,
+    menu
   };
 };
 
 const addOrder = order => {
   return {
     type: ADD_ORDER,
-    order,
+    order
   };
 };
 
@@ -36,14 +36,17 @@ export const postOrder = order => {
     try {
       const truckKey = await order.cart[0].truckName;
       if (order.cart.length !== 0) {
-        let dataObj = {}
+        let dataObj = {};
         order.cart.map(singleOrder => {
-            dataObj[singleOrder.name] = singleOrder.quantity
-        })
-        await truckOrders.doc(truckKey).set({
+          dataObj[singleOrder.name] = singleOrder.quantity;
+        });
+        await truckOrders.doc(truckKey).set(
+          {
             //this will be logged in user
-            user8: dataObj
-        }, {merge: true})
+            user6: dataObj
+          },
+          { merge: true }
+        );
       }
     } catch (error) {
       console.error(error);

@@ -10,11 +10,11 @@ class SingleTruck extends React.Component {
     super(props);
     this.state = {
       cart: [],
-      quantity: 1,
       truckName: '',
+      quantity: 1
     };
-    this.increaseQuantity = this.increaseQuantity.bind(this);
-    this.decreaseQuantity = this.decreaseQuantity.bind(this);
+    this.increaseQuantity = this.increaseQuantity.bind(this)
+    this.decreaseQuantity = this.decreaseQuantity.bind(this)
   }
 
   static navigationOptions = {
@@ -23,6 +23,7 @@ class SingleTruck extends React.Component {
       backgroundColor: 'blue',
     },
   };
+
   async componentDidMount() {
     const truckKey = this.props.navigation.getParam(
       'truckKey',
@@ -31,30 +32,25 @@ class SingleTruck extends React.Component {
     await this.props.fetchTruckMenu(truckKey);
   }
 
-  //TRY THESE WITH RENDERING THE STATE SOMEWHERE ELSE
-  //ON THE PAGE
   increaseQuantity() {
-    this.setState({ quantity: this.state.quantity + 1 });
+    this.setState({quantity: this.state.quantity + 1})
   }
-
   decreaseQuantity() {
     if (this.state.quantity === 1) {
-      this.setState({ quantity: 1 });
+      this.setState({quantity: 1})
     } else {
-      this.setState({ quantity: this.state.quantity - 1 });
+      this.setState({quantity: this.state.quantity - 1})
     }
   }
-
+  
   render() {
     const menu = this.props.menu || [];
-    console.log('menu', menu);
-    const value = Object.keys(menu);
     const truckKey = this.props.navigation.getParam(
       'truckKey',
       'Not Available'
-    );
-    return (
-      <View style={styles.container}>
+      );
+      return (
+        <View style={styles.container}>
         <Text>{truckKey}</Text>
         <Text>Menu</Text>
         {menu.map((menuItem, index) => {
@@ -62,9 +58,42 @@ class SingleTruck extends React.Component {
             <View key={index}>
               <Text>Item: {menuItem.name}</Text>
               <Text>Price: {menuItem.price}</Text>
+              <Button title="+" onPress={this.increaseQuantity} />
+              <Button title="-" onPress={this.decreaseQuantity} />
+              <Button title="Add To Cart" onPress={() => {
+                const cart = this.state.cart
+                if (cart.length === 0) {
+                  this.setState({
+                    cart: [{
+                      name: menuItem.name,
+                      price: menuItem.price,
+                      quantity: this.state.quantity,
+                      truckName: truckKey
+                    }],
+                    quantity: 1
+                  })
+                } else {
+                  let checkerArr = []
+                  cart.map(cartObj => {
+                    checkerArr.push(cartObj.name)
+                  })
+                  if (!checkerArr.includes(menuItem.name)) {
+                    this.setState({
+                      cart: [...cart, {
+                        name: menuItem.name,
+                        price: menuItem.price,
+                        quantity: this.state.quantity,
+                        truckName: truckKey
+                      }],
+                      quantity: 1
+                    })
+                  }
+                }
+              }} />
             </View>
           );
         })}
+        <Text>Quantity Of Order: {this.state.quantity}</Text>
         <Button
           color="red"
           title="Proceed To Checkout"
@@ -73,6 +102,9 @@ class SingleTruck extends React.Component {
               cart: this.state.cart,
               truckKey: this.state.truckName,
             });
+            this.setState({
+              cart: []
+            })
           }}
         />
       </View>

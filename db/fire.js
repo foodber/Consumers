@@ -15,5 +15,6 @@ const db = firebase.firestore();
 
 const allTrucks = db.collection("trucks");
 const addUser = db.collection("users");
+const truckOrders = db.collection("truckOrders");
 
-export { db, allTrucks, addUser };
+export { db, allTrucks, truckOrders, addUser };

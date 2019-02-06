@@ -59,7 +59,9 @@ render() {
           } else {
             alert("YOUR CART IS EMPTY")
           }
-          }} />
+          this.props.navigation.navigate('ThankYou')
+          }}
+          />
       </View>
     );
   }

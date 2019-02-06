@@ -1,17 +1,7 @@
 import React from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  TextInput,
-} from 'react-native';
-import { Constants } from 'expo';
-import { connect } from 'react-redux';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-import { fetchTruckLocation } from '../store/mapReducer';
-import { truckLocation } from '../db/fire';
+import { StyleSheet, View } from 'react-native';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
+import { db } from '../db/fire';
 
 export default class MapTab extends React.Component {
   constructor(props) {
@@ -21,10 +11,15 @@ export default class MapTab extends React.Component {
       latitude: null,
       longitude: null,
       error: null,
+      markers: [],
     };
   }
 
-  async componentDidMount() {
+  static navigationOptions = {
+    title: 'Nearby Trucks',
+  };
+
+  componentDidMount() {
     navigator.geolocation.getCurrentPosition(
       position => {
         this.setState({
@@ -34,31 +29,52 @@ export default class MapTab extends React.Component {
         });
       },
       error => this.setState({ error: error.message }),
-      { enableHighAccuracy: false, timeout: 200000, maximumAge: 1000 }
+      { enableHighAccuracy: false, timeout: 100000, maximumAge: 500 }
     );
 
-    const coord = await truckLocation.get();
-    coord.docs.map(doc => {
-      console.log('*******************', doc.data());
-    });
-
-    console.log('WOO>>>>>>', coordData);
+    db.collection('truckLocation')
+      .where('state', '==', 'NY')
+      .onSnapshot(
+        function(querySnapShot) {
+          let arr = [];
+          querySnapShot.forEach(function(doc) {
+            arr.push(doc.data().location);
+          });
+          this.setState({
+            markers: arr,
+          });
+        }.bind(this)
+      );
   }
 
   render() {
+    const latLong = this.state.markers;
     return (
       <View style={styles.container}>
         {this.state.latitude && this.state.longitude && (
           <MapView
             provider={PROVIDER_GOOGLE}
             style={styles.map}
+            showsUserLocation={true}
             initialRegion={{
               latitude: this.state.latitude,
               longitude: this.state.longitude,
-              latitudeDelta: 0.03,
-              longitudeDelta: 0.03,
+              longitudeDelta: 0.00299,
+              latitudeDelta: 0.00299,
             }}
-          />
+          >
+            {latLong.map(coordinates => {
+              return (
+                <MapView.Marker
+                  key={coordinates}
+                  coordinate={{
+                    longitude: coordinates.Long,
+                    latitude: coordinates.Lat,
+                  }}
+                />
+              );
+            })}
+          </MapView>
         )}
       </View>
     );
@@ -67,13 +83,15 @@ export default class MapTab extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: Constants.statusBarHeight,
-    backgroundColor: '#ecf0f1',
   },
-  map: { alignSelf: 'stretch', height: 450 },
+  map: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 },
 });
 
 // const mapStateToProps = state => ({
@@ -85,8 +103,3 @@ const styles = StyleSheet.create({
 //     dispatch(fetchTruckLocation());
 //   },
 // });
-
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(MapTab);

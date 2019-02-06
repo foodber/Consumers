@@ -57,7 +57,7 @@ class HomeScreen extends React.Component {
             );
           })}
         </View>
-        <Button color="#d63031" title="LOGOUT" onPress={this.logout} />
+        <Button color="#e17055" title="LOGOUT" onPress={this.logout} />
       </ScrollView>
     );
   }
@@ -65,8 +65,8 @@ class HomeScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
-    marginTop: Constants.statusBarHeight
+    flex: 1,
+    backgroundColor: "#d63031"
   },
   padding: {
     paddingTop: 5,
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     textAlign: "center",
     height: 75,
-    fontSize: 22,
+    fontSize: 40,
     paddingTop: 5
   },
   theHeader: {
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     textAlign: "center",
     fontSize: 30,
-    color: "#dc143c"
+    color: "#fab1a0"
   },
   image: {
     flex: 1,

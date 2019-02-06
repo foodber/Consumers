@@ -10,11 +10,13 @@ import Homepage from '../screens/Homepage';
 import SingleTruck from '../screens/SingleTruck';
 import Cart from '../screens/Cart';
 import Map from '../screens/map';
+import ThankYou from '../screens/thankYou'
 
 const HomeStack = createStackNavigator({
   Home: Homepage,
   singleTruck: SingleTruck,
   Cart: Cart,
+  ThankYou: ThankYou
 });
 
 HomeStack.navigationOptions = {

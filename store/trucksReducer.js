@@ -1,4 +1,6 @@
 import { allTrucks, truckOrders } from '../db/fire';
+import fire from "firebase";
+require("firebase/auth");
 
 const GOT_ALL_TRUCKS = 'GOT_ALL_TRUCKS';
 const SET_TRUCK_MENU = 'SET_TRUCK_MENU';
@@ -33,6 +35,7 @@ const addOrder = order => {
 export const postOrder = order => {
   return async () => {
     try {
+      const userId = await fire.auth().currentUser
       const truckKey = await order.cart[0].truckName;
       if (order.cart.length !== 0) {
         let dataObj = {};
@@ -42,7 +45,7 @@ export const postOrder = order => {
         await truckOrders.doc(truckKey).set(
           {
             //this will be logged in user
-            user6: dataObj,
+            [userId.uid]: dataObj,
           },
           { merge: true }
         );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Platform,
   StyleSheet,
@@ -7,15 +7,16 @@ import {
   Button,
   TextInput,
   ScrollView,
-} from 'react-native';
-import { Constants } from 'expo';
-import { connect } from 'react-redux';
-import { fetchAllTrucks, setMenuForTruck } from '../store/trucksReducer';
-import fire from 'firebase';
+  Image
+} from "react-native";
+import { Constants } from "expo";
+import { connect } from "react-redux";
+import { fetchAllTrucks, setMenuForTruck } from "../store/trucksReducer";
+import fire from "firebase";
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
-    title: 'Homepage',
+    title: "Homepage"
   };
 
   async componentDidMount() {
@@ -39,14 +40,18 @@ class HomeScreen extends React.Component {
                   <Text
                     style={styles.FoodBox}
                     onPress={() => {
-                      this.props.navigation.navigate('singleTruck', {
-                        truckKey: truck.name,
+                      this.props.navigation.navigate("singleTruck", {
+                        truckKey: truck.name
                       });
                       this.props.setMenuForTruck(truck.menu);
                     }}
                   >
                     {truck.name}
                   </Text>
+                  <Image
+                    style={styles.image}
+                    source={require(`../constants/images/userone@gmail.com.jpg`)}
+                  />
                 </View>
               </View>
             );
@@ -61,41 +66,42 @@ class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 2,
-    //backgroundColor: '#f7b7332',
-    marginTop: Constants.statusBarHeight,
+    marginTop: Constants.statusBarHeight
   },
   padding: {
     paddingTop: 5,
     paddingBottom: 5,
     paddingLeft: 5,
-    paddingRight: 7,
+    paddingRight: 7
   },
   ViewBox: {
-    paddingLeft: 10,
-    // borderRadius: 5,
-    // borderWidth: 1,
-    backgroundColor: '#f5f5f5',
+    flex: 1,
+    backgroundColor: "#f5f5f5"
   },
   FoodBox: {
-    //textAlign: 'center',
-    //alignSelf: 'flex-start',
-    justifyContent: 'flex-start',
+    justifyContent: "flex-start",
+    textAlign: "center",
     height: 75,
     fontSize: 22,
+    paddingTop: 5
   },
   theHeader: {
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: "flex-start",
+    textAlign: "center",
     fontSize: 30,
-    //color: 'rgba(96,100,109, 1)',
-    color: '#dc143c',
-    //lineHeight: 50,
-    //textAlign: 'left',
+    color: "#dc143c"
   },
+  image: {
+    flex: 1,
+    resizeMode: "cover",
+    width: 350,
+    height: 200
+  }
 });
 
 const mapStateToProps = state => ({
-  allTrucks: state.allTrucks.allTrucks,
+  allTrucks: state.allTrucks.allTrucks
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -104,7 +110,7 @@ const mapDispatchToProps = dispatch => ({
   },
   setMenuForTruck: menu => {
     dispatch(setMenuForTruck(menu));
-  },
+  }
 });
 
 export default connect(

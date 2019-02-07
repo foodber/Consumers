@@ -27,16 +27,8 @@ export default class LoginForm extends Component {
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .catch(error => {
-        console.log(error);
+        alert(error);
       });
-
-    if (this.state.password.length < 7) {
-      alert("Password must be at least six characters long");
-    }
-
-    if (!this.state.email.includes("@") || !this.state.email.includes(".com")) {
-      alert("Please enter a valid email address");
-    }
   }
 
   async signup() {
@@ -44,16 +36,8 @@ export default class LoginForm extends Component {
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .catch(error => {
-        console.log(error);
+        alert(error);
       });
-
-    if (this.state.password.length < 7) {
-      alert("Password must be at least six characters long");
-    }
-
-    if (!this.state.email.includes("@") || !this.state.email.includes(".com")) {
-      alert("Please enter a valid email address");
-    }
   }
 
   render() {

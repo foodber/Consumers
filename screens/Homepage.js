@@ -7,7 +7,8 @@ import {
   Button,
   TextInput,
   ScrollView,
-  Image
+  Image,
+  TouchableOpacity
 } from "react-native";
 import { Constants } from "expo";
 import { connect } from "react-redux";
@@ -31,28 +32,26 @@ class HomeScreen extends React.Component {
     const allTrucks = this.props.allTrucks || [];
     return (
       <ScrollView style={styles.container}>
-        <Text style={styles.theHeader}>All Trucks</Text>
+        <Text style={styles.theHeader}>Trucks Nearby</Text>
         <View>
           {allTrucks.map(truck => {
             return (
               <View key={truck.email} style={styles.padding}>
-                <View style={styles.ViewBox}>
-                  <Text
-                    style={styles.FoodBox}
-                    onPress={() => {
-                      this.props.navigation.navigate("singleTruck", {
-                        truckKey: truck.name
-                      });
-                      this.props.setMenuForTruck(truck.menu);
-                    }}
-                  >
-                    {truck.name}
-                  </Text>
+                <TouchableOpacity
+                  style={styles.ViewBox}
+                  onPress={() => {
+                    this.props.navigation.navigate("singleTruck", {
+                      truckKey: truck.name
+                    });
+                    this.props.setMenuForTruck(truck.menu);
+                  }}
+                >
+                  <Text style={styles.FoodBox}>{truck.name}</Text>
                   <Image
                     style={styles.image}
                     source={require(`../constants/images/userone@gmail.com.jpg`)}
                   />
-                </View>
+                </TouchableOpacity>
               </View>
             );
           })}

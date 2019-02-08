@@ -27,7 +27,7 @@ export default class LoginForm extends Component {
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .catch(error => {
-        console.log(error);
+        alert(error);
       });
   }
 
@@ -36,7 +36,7 @@ export default class LoginForm extends Component {
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .catch(error => {
-        console.log(error);
+        alert(error);
       });
   }
 

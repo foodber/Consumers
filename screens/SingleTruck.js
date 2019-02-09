@@ -113,33 +113,43 @@ class SingleTruck extends React.Component {
             </View>
           );
         })}
-        <Text>Quantity Of Item: </Text>
-        <View style={styles.quantityBox}>
+        <View>
+          <Text>Quantity Of Item: </Text>
+          <View style={{ flexDirection: "row" }}>
+            <View style={{ width: 50 }}>
+              <Button
+                title="-"
+                style={styles.button}
+                onPress={this.decreaseQuantity}
+              />
+            </View>
+            <View style={styles.quantityBox}>
+              <View style={{ paddingLeft: 15, paddingRight: 15 }}>
+                <Text style={{ fontSize: 30 }}>{this.state.quantity}</Text>
+              </View>
+              <View style={{ width: 50 }}>
+                <Button
+                  title="+"
+                  buttonStyle={styles.button}
+                  onPress={this.increaseQuantity}
+                />
+              </View>
+            </View>
+          </View>
           <Button
-            title="-"
-            style={styles.button}
-            onPress={this.decreaseQuantity}
-          />
-          <Text style={{ fontSize: 30 }}>{this.state.quantity}</Text>
-          <Button
-            title="+"
-            buttonStyle={styles.button}
-            onPress={this.increaseQuantity}
+            color="#00cec9"
+            title="Proceed To Checkout"
+            onPress={() => {
+              this.props.navigation.navigate("Cart", {
+                cart: this.state.cart,
+                truckKey: this.state.truckName
+              });
+              this.setState({
+                cart: []
+              });
+            }}
           />
         </View>
-        <Button
-          color="#00cec9"
-          title="Proceed To Checkout"
-          onPress={() => {
-            this.props.navigation.navigate("Cart", {
-              cart: this.state.cart,
-              truckKey: this.state.truckName
-            });
-            this.setState({
-              cart: []
-            });
-          }}
-        />
       </View>
     );
   }
@@ -168,15 +178,13 @@ const styles = StyleSheet.create({
   },
   button: {
     flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#74b9ff",
-    padding: 10,
-    height: 10,
-    paddingLeft: 10
+    backgroundColor: "#74b9ff"
   },
   quantityBox: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
     alignItems: "stretch"
   }
 });

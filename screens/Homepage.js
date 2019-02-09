@@ -15,9 +15,22 @@ import { connect } from "react-redux";
 import { fetchAllTrucks, setMenuForTruck } from "../store/trucksReducer";
 import fire from "firebase";
 
+const images = {
+  0: require("../constants/images/image1.jpg"),
+  1: require("../constants/images/image2.jpg"),
+  2: require("../constants/images/image3.png"),
+  3: require("../constants/images/image4.jpg"),
+  4: require("../constants/images/image5.jpeg"),
+  5: require("../constants/images/image6.jpg"),
+  6: require("../constants/images/image7.jpeg"),
+  7: require("../constants/images/image8.jpg"),
+  8: require("../constants/images/image99.jpg"),
+  9: require("../constants/images/image9.jpg")
+};
+
 class HomeScreen extends React.Component {
   static navigationOptions = {
-    title: "Homepage"
+    title: "Nearby Trucks"
   };
 
   async componentDidMount() {
@@ -32,9 +45,8 @@ class HomeScreen extends React.Component {
     const allTrucks = this.props.allTrucks || [];
     return (
       <ScrollView style={styles.container}>
-        <Text style={styles.theHeader}>Trucks Nearby</Text>
         <View>
-          {allTrucks.map(truck => {
+          {allTrucks.map((truck, index) => {
             return (
               <View key={truck.email} style={styles.padding}>
                 <TouchableOpacity
@@ -47,10 +59,7 @@ class HomeScreen extends React.Component {
                   }}
                 >
                   <Text style={styles.FoodBox}>{truck.name}</Text>
-                  <Image
-                    style={styles.image}
-                    source={require(`../constants/images/userone@gmail.com.jpg`)}
-                  />
+                  <Image style={styles.image} source={`${images[index]}`} />
                 </TouchableOpacity>
               </View>
             );
@@ -65,7 +74,7 @@ class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#d63031"
+    backgroundColor: "#ffc300"
   },
   padding: {
     paddingTop: 5,
@@ -75,9 +84,12 @@ const styles = StyleSheet.create({
   },
   ViewBox: {
     flex: 1,
-    backgroundColor: "#f5f5f5"
+    borderWidth: 1,
+    paddingBottom: 5,
+    backgroundColor: "#be0c0c"
   },
   FoodBox: {
+    color: "#FFFF",
     justifyContent: "flex-start",
     textAlign: "center",
     height: 75,
@@ -94,7 +106,7 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     resizeMode: "cover",
-    width: 350,
+    width: 347,
     height: 200
   }
 });
